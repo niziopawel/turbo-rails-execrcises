@@ -1,18 +1,14 @@
 <%= turbo_frame_tag dom_id(post) do %>
-  <div id="<%= dom_id post %>">
-    <p class="my-5 text-xl">
+  <div id="<%= dom_id post %>" class="flex p-5 flex-col rounded-md border border-gray-200 outline-none items-start my-5">
+    <p class="my-5 text-xl font-semibold">
       <%= post.body %>
     </p>
 
     <div class="my-5 flex">
-      <p class="block text-sm font-normal mb-1 mr-5">Likes (<%= post.likes || 0 %>)</p>
-      <p class="block text-sm font-normal mb-1">Retweets (<%= post.likes || 0 %>)</p>
+      <%= button_to "Likes (#{post.likes || 0})", post_like_path(post), method: :post, class: "mr-2 text-blue-500" %>
+      <%= button_to "Retweets (#{post.retweets || 0})", post_retweet_path(post), method: :post %>
     </div>
 
-    <% if action_name != "show" %>
-      <%= link_to "Show this post", post, class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      <%= link_to 'Edit this post', edit_post_path(post), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-      <hr class="mt-6">
-    <% end %>
+    <%= link_to 'Edit this post', edit_post_path(post), class: "justify-self-start rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 <% end %>
