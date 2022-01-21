@@ -22,10 +22,14 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
 
-    if @post.save
-      redirect_to @post, notice: 'Post was successfully created.'
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to posts_path, notice: 'Post was successfully created.' }
+      else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(@post, partial: 'posts/form', locals: { post: @post })
+        end
+      end
     end
   end
 
